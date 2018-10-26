@@ -41,12 +41,12 @@ namespace Savanna.Services
             int randomY = random.Next(field.Heigth);
 
 
-            while (field.Animals[randomX, randomY] != null)
+            while (field.Animals[randomY, randomX] != null)
             {
                 randomX = random.Next(field.Width);
                 randomY = random.Next(field.Heigth);
             }
-            field.Animals[randomX, randomY] = animalToAdd;
+            field.Animals[randomY, randomX] = animalToAdd;
         }
         
         public static string GetFieldInString()
@@ -63,7 +63,7 @@ namespace Savanna.Services
                     }
                     else
                     {
-                        stringBuilder.Append('.');
+                        stringBuilder.Append(' ');
                     }
                     stringBuilder.Append(' ');
                 }
