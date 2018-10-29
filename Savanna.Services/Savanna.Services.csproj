@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +48,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Savanna.Enums\Savanna.Enums.csproj">
+      <Project>{d01ecc6a-65fd-4623-a36a-7fff2090fad6}</Project>
+      <Name>Savanna.Enums</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Savanna.Interfaces\Savanna.Interfaces.csproj">
       <Project>{031acc05-e146-40a1-aa15-0c14818c9762}</Project>
       <Name>Savanna.Interfaces</Name>

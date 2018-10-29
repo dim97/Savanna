@@ -52,9 +52,16 @@ namespace Savanna.Services
         public static string GetFieldInString()
         {
             StringBuilder stringBuilder = new StringBuilder();
-
+            stringBuilder.Append('╔');
+            for (int i = 0; i < field.Width * 2; i++)
+            {
+                stringBuilder.Append('═');
+            }
+            stringBuilder.Append('╗');
+            stringBuilder.Append(Environment.NewLine);
             for (int i = 0; i < field.Heigth; i++)
             {
+                stringBuilder.Append('║');
                 for (int j = 0; j < field.Width; j++)
                 {
                     if (field.Animals[i, j] != null)
@@ -67,8 +74,16 @@ namespace Savanna.Services
                     }
                     stringBuilder.Append(' ');
                 }
+                stringBuilder.Append('║');
                 stringBuilder.Append(Environment.NewLine);
             }
+            stringBuilder.Append('╚');
+            for (int i = 0; i<field.Width*2;i++)
+            {
+                stringBuilder.Append('═');
+            }
+            stringBuilder.Append('╝');
+            stringBuilder.Append(Environment.NewLine);
             return stringBuilder.ToString();
         }
 

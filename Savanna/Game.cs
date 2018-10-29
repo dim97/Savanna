@@ -9,12 +9,13 @@ namespace Savanna
 
         public static void Play()
         {
-            MovementHandler.HandleMovement();
+            
             Thread keyHandler = new Thread(GlobalKeyHandler.HandleKeys);
             keyHandler.Start();
 
             while (true)
             {
+                MovementHandler.HandleMovement(FieldHandler.field);
                 Draw();
                 Thread.Sleep(1000);
             }
