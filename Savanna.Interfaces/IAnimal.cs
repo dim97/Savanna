@@ -8,6 +8,6 @@ namespace Savanna.Interfaces
         int Health { get; set; }
         char Sign { get; set; }
         int Speed { get; set; }
-        int ViewingRadius { get; set; }
+        int VisionRange { get; set; }
     }
 }

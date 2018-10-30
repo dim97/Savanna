@@ -1,4 +1,5 @@
-﻿using Savanna.Models;
+﻿using Savanna.Enums;
+using Savanna.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,7 +10,7 @@ namespace Savanna.Services
     {
         static List<Point> movedAnimals;
         static int seed = 1;
-        static Point oldPosition, newPosition;
+
 
         public static void HandleMovement(Field field)
         {
@@ -21,9 +22,20 @@ namespace Savanna.Services
                 {
                     if (field.Animals[i, j] != null)
                     {
+                        Point oldPosition, newPosition;
                         int animalSpeed = field.Animals[i, j].Speed;
                         oldPosition = new Point(j, i);
-                        newPosition = GetRandomNewPosition(field, oldPosition, animalSpeed);
+
+                        Point nearestHerbivore = SelectNearestHerbivore(field, oldPosition, field.Animals[i, j].VisionRange);
+
+                        if ((nearestHerbivore.X != -1) && (field.Animals[i, j].Type == AnimalType.Carnivore))
+                        {
+                            newPosition = nearestHerbivore;
+                        }
+                        else
+                        {
+                            newPosition = GetRandomNewPosition(field, oldPosition, animalSpeed);
+                        }
 
                         if (MoveToPoint(field, oldPosition, newPosition))
                         {
@@ -34,14 +46,14 @@ namespace Savanna.Services
             }
         }
 
-        static Point GetRandomNewPosition(Field field, Point oldPosition, int animalSpeed)
+        static Point GetRandomNewPosition(Field field, Point position, int animalSpeed)
         {
 
             Random random = new Random(seed);
             seed++;
             Point newPosition;
 
-            List<Point> PositionsToMove = GetAllPositionsToMove(field, oldPosition, animalSpeed);
+            List<Point> PositionsToMove = GetAllPositionsToMove(field, position, animalSpeed);
 
             if (PositionsToMove.Count > 0)
             {
@@ -49,11 +61,67 @@ namespace Savanna.Services
             }
             else
             {
-                newPosition = oldPosition;
+                newPosition = position;
             }
             return newPosition;
         }
-     
+
+        static Point SelectNearestHerbivore(Field field, Point position, int visionRange)
+        {
+            List<Point> animals = FindHerbivores(field, position, visionRange);
+            Point nearestAnimal = new Point(-1, -1);
+
+            foreach (Point animalLocation in animals)
+            {
+                if (nearestAnimal.X == -1)
+                {
+                    nearestAnimal = animalLocation;
+                }
+                else if (GetDistance(position, animalLocation) < GetDistance(position, nearestAnimal))
+                {
+                    nearestAnimal = animalLocation;
+                }
+            }
+
+            return nearestAnimal;
+
+        }
+
+        static List<Point> FindHerbivores(Field field, Point position, int visionRange)
+        {
+            List<Point> animals = FindNearestAnimals(field, position, visionRange);
+            List<Point> herbivores = new List<Point>();
+
+            foreach (Point animalLocation in animals)
+            {
+                if (field.Animals[animalLocation.Y, animalLocation.X].Type == AnimalType.Herbivore)
+                {
+                    herbivores.Add(animalLocation);
+                }
+            }
+
+            return herbivores;
+        }
+
+        static List<Point> FindNearestAnimals(Field field, Point position, int visionRange)
+        {
+            List<Point> animals = new List<Point>();
+
+            for (int i = position.Y - visionRange; i < position.Y + visionRange; i++)
+            {
+                for (int j = position.X - visionRange; j < position.X + visionRange; j++)
+                {
+                    if (CheckFieldBorders(field, new Point(j, i)) && !CheckEmpty(field, new Point(j, i)))
+                    {
+                        animals.Add(new Point(j, i));
+                    }
+                }
+            }
+
+            return animals;
+        }
+
+
         static List<Point> GetAllPositionsToMove(Field field, Point position, int animalSpeed)
         {
             List<Point> PositionsToMove = new List<Point>();
@@ -108,6 +176,14 @@ namespace Savanna.Services
             {
                 return true;
             }
+        }
+
+        static double GetDistance(Point A, Point B)
+        {
+            double result;
+            result = Math.Sqrt((A.X - B.X) * (A.X - B.X) + (A.Y - B.Y) * (A.Y - B.Y));
+
+            return result;
         }
     }
 }
