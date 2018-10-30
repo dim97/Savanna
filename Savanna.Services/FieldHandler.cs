@@ -15,6 +15,26 @@ namespace Savanna.Services
             Animals = new IAnimal[Field.DefaultHeigth, Field.DefaultWidth]
         };
 
+        public static bool IsFull
+        {
+            get
+            {
+                bool flag = true;
+                for (int i = 0; i < field.Heigth; i++)
+                {
+                    for (int j = 0; j < field.Width; j++)
+                    {
+                        if (field.Animals[i, j] == null)
+                        {
+                            flag = false;
+                        }
+                    }
+                };
+                return flag;
+            }
+            set { }
+        }
+
         public static void setRandomAnimals()
         {
             Random random = new Random();
@@ -37,18 +57,18 @@ namespace Savanna.Services
         {
             Random random = new Random();
 
-            int randomX = random.Next(field.Width); 
+            int randomX = random.Next(field.Width);
             int randomY = random.Next(field.Heigth);
 
-
-            while (field.Animals[randomY, randomX] != null)
+            while ((field.Animals[randomY, randomX] != null)&&!IsFull)
             {
                 randomX = random.Next(field.Width);
                 randomY = random.Next(field.Heigth);
             }
+
             field.Animals[randomY, randomX] = animalToAdd;
         }
-        
+
         public static string GetFieldInString()
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -78,7 +98,7 @@ namespace Savanna.Services
                 stringBuilder.Append(Environment.NewLine);
             }
             stringBuilder.Append('╚');
-            for (int i = 0; i<field.Width*2;i++)
+            for (int i = 0; i < field.Width * 2; i++)
             {
                 stringBuilder.Append('═');
             }

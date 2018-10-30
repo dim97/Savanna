@@ -7,8 +7,8 @@ namespace Savanna.Models
 {
     public class Field
     {
-        public static int DefaultWidth = 40;
-        public static int DefaultHeigth = 40;
+        public static int DefaultWidth = 5;
+        public static int DefaultHeigth = 3;
 
         public int Width;
         public int Heigth;

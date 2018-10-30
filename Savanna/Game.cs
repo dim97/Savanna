@@ -17,7 +17,7 @@ namespace Savanna
             {
                 MovementHandler.HandleMovement(FieldHandler.field);
                 Draw();
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
             }
         }
 

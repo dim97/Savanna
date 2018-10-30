@@ -24,6 +24,7 @@ namespace Savanna.Services
                 case (ConsoleKey.Escape): { Environment.Exit(0); break; }
             }
         }
+
         private static void HandleAnimalKeys()
         {
             keyinfo = Console.ReadKey();

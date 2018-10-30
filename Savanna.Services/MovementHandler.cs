@@ -8,7 +8,7 @@ namespace Savanna.Services
     public static class MovementHandler
     {
         static List<Point> movedAnimals;
-
+        static int seed = 1;
         static Point oldPosition, newPosition;
 
         public static void HandleMovement(Field field)
@@ -34,18 +34,45 @@ namespace Savanna.Services
             }
         }
 
-        public static Point GetRandomNewPosition(Field field, Point oldPosition, int animalSpeed)
+        static Point GetRandomNewPosition(Field field, Point oldPosition, int animalSpeed)
         {
-            Random random = new Random();
 
+            Random random = new Random(seed);
+            seed++;
             Point newPosition;
 
-            newPosition = new Point(oldPosition.X + random.Next(-animalSpeed, animalSpeed + 1), oldPosition.Y + random.Next(-animalSpeed, animalSpeed + 1));
+            List<Point> PositionsToMove = GetAllPositionsToMove(field, oldPosition, animalSpeed);
 
+            if (PositionsToMove.Count > 0)
+            {
+                newPosition = PositionsToMove[random.Next(PositionsToMove.Count)];
+            }
+            else
+            {
+                newPosition = oldPosition;
+            }
             return newPosition;
         }
+     
+        static List<Point> GetAllPositionsToMove(Field field, Point position, int animalSpeed)
+        {
+            List<Point> PositionsToMove = new List<Point>();
 
-        public static bool MoveToPoint(Field field, Point oldPosition, Point newPosition)
+            for (int i = position.Y - animalSpeed; i < position.Y + animalSpeed + 1; i++)
+            {
+                for (int j = position.X - animalSpeed; j < position.X + animalSpeed + 1; j++)
+                {
+                    Point pointToAdd = new Point(j, i);
+                    if (CheckFieldBorders(field, pointToAdd) && CheckEmpty(field, pointToAdd) && (pointToAdd != new Point(position.X, position.Y)))
+                    {
+                        PositionsToMove.Add(pointToAdd);
+                    }
+                }
+            }
+            return PositionsToMove;
+        }
+
+        static bool MoveToPoint(Field field, Point oldPosition, Point newPosition)
         {
             if ((oldPosition != newPosition) && CheckFieldBorders(field, newPosition) && !movedAnimals.Contains(oldPosition))
             {
@@ -59,9 +86,21 @@ namespace Savanna.Services
             }
         }
 
-        public static bool CheckFieldBorders(Field field, Point newPosition)
+        static bool CheckEmpty(Field field, Point position)
         {
-            if ((newPosition.X < 0) || (newPosition.Y < 0) || (newPosition.X >= field.Width) || (newPosition.Y >= field.Heigth))
+            if (field.Animals[position.Y, position.X] != null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        static bool CheckFieldBorders(Field field, Point position)
+        {
+            if ((position.X < 0) || (position.Y < 0) || (position.X >= field.Width) || (position.Y >= field.Heigth))
             {
                 return false;
             }
