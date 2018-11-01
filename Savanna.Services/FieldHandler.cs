@@ -2,20 +2,20 @@
 using Savanna.Models;
 using Savanna.Models.Animals;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Savanna.Services
 {
-    public static class FieldHandler
+    public class FieldHandler
     {
-        public static Field field = new Field()
+        public Field field = new Field()
         {
             Heigth = Field.DefaultHeigth,
             Width = Field.DefaultWidth,
             Animals = new IAnimal[Field.DefaultHeigth, Field.DefaultWidth]
         };
-
-        public static bool IsFull
+        public bool IsFull
         {
             get
             {
@@ -30,58 +30,34 @@ namespace Savanna.Services
                         }
                     }
                 };
+                if (flag == true)
+                {
+                    return flag;
+                }
                 return flag;
             }
             set { }
         }
 
-        public static void setRandomAnimals()
+        public List<string> GetFieldInStringList()
         {
-            Random random = new Random();
+            ConsoleWriter consoleWriter = new ConsoleWriter(false);
 
-            for (int i = 0; i < field.Heigth; i++)
-            {
-                for (int j = 0; j < field.Width; j++)
-                {
-                    switch (random.Next(3))
-                    {
-                        case 0: { field.Animals[i, j] = null; break; }
-                        case 1: { field.Animals[i, j] = new Antilope(); break; }
-                        case 2: { field.Animals[i, j] = new Lion(); break; }
-                    }
-                }
-            }
-        }
-
-        public static void PlaceAnimalInField(IAnimal animalToAdd)
-        {
-            Random random = new Random();
-
-            int randomX = random.Next(field.Width);
-            int randomY = random.Next(field.Heigth);
-
-            while ((field.Animals[randomY, randomX] != null)&&!IsFull)
-            {
-                randomX = random.Next(field.Width);
-                randomY = random.Next(field.Heigth);
-            }
-
-            field.Animals[randomY, randomX] = animalToAdd;
-        }
-
-        public static string GetFieldInString()
-        {
+            List<string> lines = new List<string>();
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append('╔');
-            for (int i = 0; i < field.Width * 2; i++)
-            {
-                stringBuilder.Append('═');
-            }
-            stringBuilder.Append('╗');
-            stringBuilder.Append(Environment.NewLine);
+
+            //stringBuilder.Append('╔');
+            //for (int i = 0; i < field.Width * 2; i++)
+            //{
+            //    stringBuilder.Append('═');
+            //}
+            //stringBuilder.Append('╗');
+            //lines.Add(stringBuilder.ToString());
+            //stringBuilder.Clear();
+            
             for (int i = 0; i < field.Heigth; i++)
             {
-                stringBuilder.Append('║');
+                //stringBuilder.Append('║');
                 for (int j = 0; j < field.Width; j++)
                 {
                     if (field.Animals[i, j] != null)
@@ -90,26 +66,26 @@ namespace Savanna.Services
                     }
                     else
                     {
-                        stringBuilder.Append(' ');
+                        stringBuilder.Append(consoleWriter.EmptySpace);
                     }
                     stringBuilder.Append(' ');
                 }
-                stringBuilder.Append('║');
-                stringBuilder.Append(Environment.NewLine);
+                //stringBuilder.Append('║');
+
+                lines.Add(stringBuilder.ToString());
+                stringBuilder.Clear();
             }
-            stringBuilder.Append('╚');
+            //stringBuilder.Append('╚');
             for (int i = 0; i < field.Width * 2; i++)
             {
-                stringBuilder.Append('═');
+                //stringBuilder.Append('═');
             }
-            stringBuilder.Append('╝');
-            stringBuilder.Append(Environment.NewLine);
-            return stringBuilder.ToString();
-        }
+            //stringBuilder.Append('╝');
 
-        public static void DrawFieldToConsole()
-        {
-            Console.Write(GetFieldInString());
+            lines.Add(stringBuilder.ToString());
+            stringBuilder.Clear();
+
+            return lines;
         }
 
     }

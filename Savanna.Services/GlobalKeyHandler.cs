@@ -3,39 +3,39 @@ using System;
 
 namespace Savanna.Services
 {
-    public static class GlobalKeyHandler
+    public class GlobalKeyHandler
     {
-        static ConsoleKeyInfo keyinfo;
+        ConsoleKeyInfo keyinfo;
+        AnimalPlacer animalPlacer = new AnimalPlacer();
 
-        public static void HandleKeys()
+        public void HandleKeys(FieldHandler fieldHandler)
         {
             while (true)
             {
-                HandleGameKeys();
-                HandleAnimalKeys();
+
+                keyinfo = Console.ReadKey(true);
+                HandleGameKeys(keyinfo);
+                HandleAnimalKeys(keyinfo, fieldHandler);
             }
         }
 
-        private static void HandleGameKeys()
+        private void HandleGameKeys(ConsoleKeyInfo key)
         {
-            keyinfo = Console.ReadKey();
             switch (keyinfo.Key)
             {
                 case (ConsoleKey.Escape): { Environment.Exit(0); break; }
             }
         }
 
-        private static void HandleAnimalKeys()
+        private void HandleAnimalKeys(ConsoleKeyInfo key, FieldHandler fieldHandler)
         {
-            keyinfo = Console.ReadKey();
-
             if (char.ToUpper(keyinfo.KeyChar) == new Antilope().Sign)
             {
-                FieldHandler.PlaceAnimalInField(new Antilope());
+                animalPlacer.PlaceAnimalInRandomPlace(new Antilope(), fieldHandler);
             }
             if (char.ToUpper(keyinfo.KeyChar) == new Lion().Sign)
             {
-                FieldHandler.PlaceAnimalInField(new Lion());
+                animalPlacer.PlaceAnimalInRandomPlace(new Lion(), fieldHandler);
             }
         }
     }

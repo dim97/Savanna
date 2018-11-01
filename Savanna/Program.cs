@@ -10,7 +10,8 @@ namespace Savanna
     {
         static void Main(string[] args)
         {
-            Game.Play();
+            Game game = new Game();
+            game.Play();
         }
     }
 }

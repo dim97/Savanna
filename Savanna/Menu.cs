@@ -2,13 +2,13 @@
 
 namespace Savanna
 {
-    public static class Menu
+    public class Menu
     {
-        static string _message = string.Empty;
-        static string _errorMessage = string.Empty;
-        static string _input = string.Empty;
+         string _message = string.Empty;
+         string _errorMessage = string.Empty;
+         string _input = string.Empty;
 
-        public static void ShowMenu()
+        public  void ShowMenu()
         {
             Console.Write(_message);
             _input = Console.ReadLine();
@@ -65,7 +65,7 @@ namespace Savanna
             //    }
             //}
 
-            //public static void RequestGameOptions()
+            //public void RequestGameOptions()
             //{
             //    string inputWidth, inputHeigth;
 

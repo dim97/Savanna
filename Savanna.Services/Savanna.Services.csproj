@@ -42,9 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimalPlacer.cs" />
+    <Compile Include="ConsoleWriter.cs" />
+    <Compile Include="DistanceHandler.cs" />
     <Compile Include="FieldHandler.cs" />
     <Compile Include="GlobalKeyHandler.cs" />
     <Compile Include="MovementHandler.cs" />
+    <Compile Include="PositionChecker.cs" />
+    <Compile Include="PositionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

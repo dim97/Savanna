@@ -1,30 +1,24 @@
 ﻿using Savanna.Services;
-using System;
 using System.Threading;
 
 namespace Savanna
 {
-    public static class Game
+    public class Game
     {
+        MovementHandler movementHandler = new MovementHandler();
 
-        public static void Play()
+        public void Play()
         {
-            
-            Thread keyHandler = new Thread(GlobalKeyHandler.HandleKeys);
+            GlobalKeyHandler globalKeyHandler = new GlobalKeyHandler();
+            Thread keyHandler = new Thread(() => globalKeyHandler.HandleKeys(movementHandler.fieldHandler));
             keyHandler.Start();
+
+            movementHandler.consoleWriter.DrawFieldToConsole(movementHandler.fieldHandler);
 
             while (true)
             {
-                MovementHandler.HandleMovement(FieldHandler.field);
-                Draw();
-                Thread.Sleep(500);
+                movementHandler.HandleMovement();
             }
-        }
-
-        public static void Draw()
-        {
-            Console.Clear();
-            FieldHandler.DrawFieldToConsole();
         }
 
     }
