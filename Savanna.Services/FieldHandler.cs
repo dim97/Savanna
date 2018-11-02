@@ -8,7 +8,7 @@ using System.Text;
 namespace Savanna.Services
 {
     public class FieldHandler
-    {
+    {       
         public Field field = new Field()
         {
             Heigth = Field.DefaultHeigth,
@@ -41,23 +41,12 @@ namespace Savanna.Services
 
         public List<string> GetFieldInStringList()
         {
-            ConsoleWriter consoleWriter = new ConsoleWriter(false);
 
             List<string> lines = new List<string>();
             StringBuilder stringBuilder = new StringBuilder();
-
-            //stringBuilder.Append('╔');
-            //for (int i = 0; i < field.Width * 2; i++)
-            //{
-            //    stringBuilder.Append('═');
-            //}
-            //stringBuilder.Append('╗');
-            //lines.Add(stringBuilder.ToString());
-            //stringBuilder.Clear();
             
             for (int i = 0; i < field.Heigth; i++)
             {
-                //stringBuilder.Append('║');
                 for (int j = 0; j < field.Width; j++)
                 {
                     if (field.Animals[i, j] != null)
@@ -66,24 +55,14 @@ namespace Savanna.Services
                     }
                     else
                     {
-                        stringBuilder.Append(consoleWriter.EmptySpace);
+                        stringBuilder.Append(ConsoleWriter.EmptySpace);
                     }
                     stringBuilder.Append(' ');
                 }
-                //stringBuilder.Append('║');
 
                 lines.Add(stringBuilder.ToString());
                 stringBuilder.Clear();
             }
-            //stringBuilder.Append('╚');
-            for (int i = 0; i < field.Width * 2; i++)
-            {
-                //stringBuilder.Append('═');
-            }
-            //stringBuilder.Append('╝');
-
-            lines.Add(stringBuilder.ToString());
-            stringBuilder.Clear();
 
             return lines;
         }

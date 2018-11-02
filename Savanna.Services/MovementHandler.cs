@@ -8,22 +8,23 @@ namespace Savanna.Services
 {
     public class MovementHandler
     {
-        public bool hasChanged = true;
+        
         List<Point> movedAnimals;
         int fullIterationDuration = 500;
 
         public FieldHandler fieldHandler = new FieldHandler();
         PositionHandler positionHandler = new PositionHandler();
         PositionChecker positionChecker = new PositionChecker();
-        public ConsoleWriter consoleWriter = new ConsoleWriter(false);
+        public ConsoleWriter consoleWriter = new ConsoleWriter(true);
 
         public void HandleMovement()
         {
             MoveAnimals(fieldHandler.field, AnimalType.Carnivore);
             Thread.Sleep(fullIterationDuration / 2);
-
+            consoleWriter.DrawPointsFromList(fieldHandler);
             MoveAnimals(fieldHandler.field, AnimalType.Herbivore);            
             Thread.Sleep(fullIterationDuration / 2);
+            consoleWriter.DrawPointsFromList(fieldHandler);
         }
 
         void MoveAnimals(Field field, AnimalType type)
@@ -64,9 +65,11 @@ namespace Savanna.Services
             if ((oldPosition != newPosition) && positionChecker.CheckFieldBorders(field, newPosition) && !movedAnimals.Contains(oldPosition))
             {
                 field.Animals[newPosition.Y, newPosition.X] = field.Animals[oldPosition.Y, oldPosition.X];
-                consoleWriter.RedrawCell(newPosition, field.Animals[oldPosition.Y, oldPosition.X].Sign);
+                ConsoleWriter.PointsToDraw.Add(new DrawingPoint() {Position = newPosition, Sign = field.Animals[newPosition.Y, newPosition.X] .Sign}); 
+                //consoleWriter.RedrawCell(newPosition, field.Animals[oldPosition.Y, oldPosition.X].Sign);
                 field.Animals[oldPosition.Y, oldPosition.X] = null;
-                consoleWriter.RedrawCell(oldPosition, consoleWriter.EmptySpace);
+                ConsoleWriter.PointsToDraw.Add(new DrawingPoint() { Position = oldPosition, Sign = ConsoleWriter.EmptySpace });
+                //consoleWriter.RedrawCell(oldPosition, ConsoleWriter.EmptySpace);
                 return true;
             }
             else

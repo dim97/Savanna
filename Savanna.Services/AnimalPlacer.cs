@@ -7,6 +7,8 @@ namespace Savanna.Services
 {
     public class AnimalPlacer
     {
+        public Point NewAnimalPosition { get; private set; }
+
         public void PlaceAnimalInRandomPlace(IAnimal animalToAdd, FieldHandler fieldHandler)
         {
             Random random = new Random();
@@ -22,12 +24,16 @@ namespace Savanna.Services
                 }
 
                 fieldHandler.field.Animals[randomY, randomX] = animalToAdd;
+                NewAnimalPosition = new Point(randomX,randomY);
+                ConsoleWriter.PointsToDraw.Add(new DrawingPoint() { Position = NewAnimalPosition, Sign = animalToAdd.Sign });
             }
         }
 
-        public void PlaceAnimalInField(IAnimal animalToAdd, Field field, Point position)
+        public void PlaceAnimalInField(IAnimal animalToAdd, FieldHandler fieldHandler, Point position)
         {
-            field.Animals[position.Y, position.X] = animalToAdd;
+            fieldHandler.field.Animals[position.Y, position.X] = animalToAdd;
+            NewAnimalPosition = new Point(position.X, position.Y);
+            ConsoleWriter.PointsToDraw.Add(new DrawingPoint() { Position = NewAnimalPosition, Sign = animalToAdd.Sign });
         }
     }
 }
