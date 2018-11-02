@@ -31,21 +31,24 @@ namespace Savanna.Services
             return newPosition;
         }
 
-        public Point SelectNearestHerbivore(Field field, Point position, int visionRange)
+        public Point SelectNearestAnimalByType(Field field, Point position, int visionRange, AnimalType searchingAnimalType)
         {
-            List<Point> animals = FindHerbivores(field, position, visionRange);
+            List<Point> animals = FindNearestAnimals(field, position, visionRange);
             Point nearestAnimal = new Point(-1, -1);
             DistanceHandler distanceHandler = new DistanceHandler();
 
             foreach (Point animalLocation in animals)
             {
-                if (nearestAnimal.X == -1)
+                if (field.Animals[animalLocation.Y,animalLocation.X].Type==searchingAnimalType)
                 {
-                    nearestAnimal = animalLocation;
-                }
-                else if (distanceHandler.GetDistance(position, animalLocation) < distanceHandler.GetDistance(position, nearestAnimal))
-                {
-                    nearestAnimal = animalLocation;
+                    if (nearestAnimal.X == -1)
+                    {
+                        nearestAnimal = animalLocation;
+                    }
+                    else if (distanceHandler.GetDistance(position, animalLocation) < distanceHandler.GetDistance(position, nearestAnimal))
+                    {
+                        nearestAnimal = animalLocation;
+                    }
                 }
             }
 
@@ -53,21 +56,81 @@ namespace Savanna.Services
 
         }
 
-        List<Point> FindHerbivores(Field field, Point position, int visionRange)
-        {
-            List<Point> animals = FindNearestAnimals(field, position, visionRange);
-            List<Point> herbivores = new List<Point>();
+        //public Point SelectNearestHerbivore(Field field, Point position, int visionRange)
+        //{
+        //    List<Point> animals = FindHerbivores(field, position, visionRange);
+        //    Point nearestAnimal = new Point(-1, -1);
+        //    DistanceHandler distanceHandler = new DistanceHandler();
 
-            foreach (Point animalLocation in animals)
-            {
-                if (field.Animals[animalLocation.Y, animalLocation.X].Type == AnimalType.Herbivore)
-                {
-                    herbivores.Add(animalLocation);
-                }
-            }
+        //    foreach (Point animalLocation in animals)
+        //    {
+        //        if (nearestAnimal.X == -1)
+        //        {
+        //            nearestAnimal = animalLocation;
+        //        }
+        //        else if (distanceHandler.GetDistance(position, animalLocation) < distanceHandler.GetDistance(position, nearestAnimal))
+        //        {
+        //            nearestAnimal = animalLocation;
+        //        }
+        //    }
 
-            return herbivores;
-        }
+        //    return nearestAnimal;
+
+        //}
+
+        //public Point SelectNearestCarnivore(Field field, Point position, int visionRange)
+        //{
+        //    List<Point> animals = FindCarnivores(field, position, visionRange);
+        //    Point nearestAnimal = new Point(-1, -1);
+        //    DistanceHandler distanceHandler = new DistanceHandler();
+
+        //    foreach (Point animalLocation in animals)
+        //    {
+        //        if (nearestAnimal.X == -1)
+        //        {
+        //            nearestAnimal = animalLocation;
+        //        }
+        //        else if (distanceHandler.GetDistance(position, animalLocation) < distanceHandler.GetDistance(position, nearestAnimal))
+        //        {
+        //            nearestAnimal = animalLocation;
+        //        }
+        //    }
+
+        //    return nearestAnimal;
+
+        //}
+
+        //List<Point> FindHerbivores(Field field, Point position, int visionRange)
+        //{
+        //    List<Point> animals = FindNearestAnimals(field, position, visionRange);
+        //    List<Point> herbivores = new List<Point>();
+
+        //    foreach (Point animalLocation in animals)
+        //    {
+        //        if (field.Animals[animalLocation.Y, animalLocation.X].Type == AnimalType.Herbivore)
+        //        {
+        //            herbivores.Add(animalLocation);
+        //        }
+        //    }
+
+        //    return herbivores;
+        //}
+
+        //List<Point> FindCarnivores(Field field, Point position, int visionRange)
+        //{
+        //    List<Point> animals = FindNearestAnimals(field, position, visionRange);
+        //    List<Point> carnivores = new List<Point>();
+
+        //    foreach (Point animalLocation in animals)
+        //    {
+        //        if (field.Animals[animalLocation.Y, animalLocation.X].Type == AnimalType.Carnivore)
+        //        {
+        //            carnivores.Add(animalLocation);
+        //        }
+        //    }
+
+        //    return carnivores;
+        //}
 
         List<Point> FindNearestAnimals(Field field, Point position, int visionRange)
         {

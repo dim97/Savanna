@@ -1,14 +1,12 @@
 ﻿using Savanna.Interfaces;
 using Savanna.Models;
-using Savanna.Models.Animals;
-using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Savanna.Services
 {
     public class FieldHandler
-    {       
+    {
         public Field field = new Field()
         {
             Heigth = Field.DefaultHeigth,
@@ -44,7 +42,7 @@ namespace Savanna.Services
 
             List<string> lines = new List<string>();
             StringBuilder stringBuilder = new StringBuilder();
-            
+
             for (int i = 0; i < field.Heigth; i++)
             {
                 for (int j = 0; j < field.Width; j++)

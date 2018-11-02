@@ -4,6 +4,6 @@
     public enum AnimalType
     {
         Herbivore,
-        Carnivore,
+        Carnivore
     }
 }
