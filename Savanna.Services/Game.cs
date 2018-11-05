@@ -1,7 +1,6 @@
-﻿using Savanna.Services;
-using System.Threading;
+﻿using System.Threading;
 
-namespace Savanna
+namespace Savanna.Services
 {
     public class Game
     {

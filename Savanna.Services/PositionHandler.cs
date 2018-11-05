@@ -8,14 +8,14 @@ namespace Savanna.Services
 {
     public class PositionHandler
     {
-        int seed = 1;
+        private int _seed = 1;
 
         PositionChecker positionChecker = new PositionChecker();
 
         public Point GetRandomNewPosition(Field field, Point position, int animalSpeed)
         {
-            Random random = new Random(seed);
-            seed++;
+            Random random = new Random(_seed);
+            _seed++;
             Point newPosition;
 
             List<Point> PositionsToMove = GetAllPositionsToMove(field, position, animalSpeed);
@@ -31,126 +31,35 @@ namespace Savanna.Services
             return newPosition;
         }
 
-        public Point SelectNearestAnimalByType(Field field, Point position, int visionRange, AnimalType searchingAnimalType)
+        public Point GetSuitableNewPosition(Field field, Point currentPosition, Point desiredPosition, int animalSpeed, AnimalType animalType)
         {
-            List<Point> animals = FindNearestAnimals(field, position, visionRange);
-            Point nearestAnimal = new Point(-1, -1);
-            DistanceHandler distanceHandler = new DistanceHandler();
+            Point newPosition = new Point(currentPosition.X,currentPosition.Y);
 
-            foreach (Point animalLocation in animals)
+            if (positionChecker.CheckFieldBorders(field, desiredPosition) && positionChecker.CheckSuitability(field, desiredPosition,animalType))
             {
-                if (field.Animals[animalLocation.Y,animalLocation.X].Type==searchingAnimalType)
+                newPosition = desiredPosition;
+            }
+            else
+            {
+                double minimumDistance = Math.Sqrt(field.Heigth * field.Heigth + field.Width * field.Width);
+                DistanceHandler distanceHandler = new DistanceHandler();
+                List<Point> PositionsToMove = GetAllPositionsToMove(field, currentPosition, animalSpeed);
+
+                foreach (Point position in PositionsToMove)
                 {
-                    if (nearestAnimal.X == -1)
+                    double distance = distanceHandler.GetDistance(position, desiredPosition);
+                    if (distance < minimumDistance)
                     {
-                        nearestAnimal = animalLocation;
-                    }
-                    else if (distanceHandler.GetDistance(position, animalLocation) < distanceHandler.GetDistance(position, nearestAnimal))
-                    {
-                        nearestAnimal = animalLocation;
+                        minimumDistance = distance;
+                        newPosition = position;
                     }
                 }
             }
 
-            return nearestAnimal;
-
+            return newPosition;
         }
 
-        //public Point SelectNearestHerbivore(Field field, Point position, int visionRange)
-        //{
-        //    List<Point> animals = FindHerbivores(field, position, visionRange);
-        //    Point nearestAnimal = new Point(-1, -1);
-        //    DistanceHandler distanceHandler = new DistanceHandler();
-
-        //    foreach (Point animalLocation in animals)
-        //    {
-        //        if (nearestAnimal.X == -1)
-        //        {
-        //            nearestAnimal = animalLocation;
-        //        }
-        //        else if (distanceHandler.GetDistance(position, animalLocation) < distanceHandler.GetDistance(position, nearestAnimal))
-        //        {
-        //            nearestAnimal = animalLocation;
-        //        }
-        //    }
-
-        //    return nearestAnimal;
-
-        //}
-
-        //public Point SelectNearestCarnivore(Field field, Point position, int visionRange)
-        //{
-        //    List<Point> animals = FindCarnivores(field, position, visionRange);
-        //    Point nearestAnimal = new Point(-1, -1);
-        //    DistanceHandler distanceHandler = new DistanceHandler();
-
-        //    foreach (Point animalLocation in animals)
-        //    {
-        //        if (nearestAnimal.X == -1)
-        //        {
-        //            nearestAnimal = animalLocation;
-        //        }
-        //        else if (distanceHandler.GetDistance(position, animalLocation) < distanceHandler.GetDistance(position, nearestAnimal))
-        //        {
-        //            nearestAnimal = animalLocation;
-        //        }
-        //    }
-
-        //    return nearestAnimal;
-
-        //}
-
-        //List<Point> FindHerbivores(Field field, Point position, int visionRange)
-        //{
-        //    List<Point> animals = FindNearestAnimals(field, position, visionRange);
-        //    List<Point> herbivores = new List<Point>();
-
-        //    foreach (Point animalLocation in animals)
-        //    {
-        //        if (field.Animals[animalLocation.Y, animalLocation.X].Type == AnimalType.Herbivore)
-        //        {
-        //            herbivores.Add(animalLocation);
-        //        }
-        //    }
-
-        //    return herbivores;
-        //}
-
-        //List<Point> FindCarnivores(Field field, Point position, int visionRange)
-        //{
-        //    List<Point> animals = FindNearestAnimals(field, position, visionRange);
-        //    List<Point> carnivores = new List<Point>();
-
-        //    foreach (Point animalLocation in animals)
-        //    {
-        //        if (field.Animals[animalLocation.Y, animalLocation.X].Type == AnimalType.Carnivore)
-        //        {
-        //            carnivores.Add(animalLocation);
-        //        }
-        //    }
-
-        //    return carnivores;
-        //}
-
-        List<Point> FindNearestAnimals(Field field, Point position, int visionRange)
-        {
-            List<Point> animals = new List<Point>();
-
-            for (int i = position.Y - visionRange; i < position.Y + visionRange; i++)
-            {
-                for (int j = position.X - visionRange; j < position.X + visionRange; j++)
-                {
-                    if (positionChecker.CheckFieldBorders(field, new Point(j, i)) && !positionChecker.CheckEmpty(field, new Point(j, i)))
-                    {
-                        animals.Add(new Point(j, i));
-                    }
-                }
-            }
-
-            return animals;
-        }
-
-        List<Point> GetAllPositionsToMove(Field field, Point position, int animalSpeed)
+        public List<Point> GetAllPositionsToMove(Field field, Point position, int animalSpeed)
         {
             List<Point> PositionsToMove = new List<Point>();
 
@@ -167,5 +76,32 @@ namespace Savanna.Services
             }
             return PositionsToMove;
         }
+
+        public Point GetAnimalNextWaypoint(Field field, Point startPoint, Point destinationPoint, int speed, MovingType movingType)
+        {
+
+            DistanceHandler distanceHandler = new DistanceHandler();
+
+            int resultX = 0, resultY = 0 ;
+            double distance;
+
+            distance = distanceHandler.GetDistance(startPoint, destinationPoint);
+
+            if (movingType == MovingType.Pursuit)
+            {
+                resultX = startPoint.X + (int)Math.Round((destinationPoint.X - startPoint.X) * speed / distance);
+                resultY = startPoint.Y + (int)Math.Round((destinationPoint.Y - startPoint.Y) * speed / distance);
+            }
+            else if (movingType == MovingType.Runaway)
+            {
+                resultX = startPoint.X - (int)Math.Round((destinationPoint.X - startPoint.X) * speed / distance);
+                resultY = startPoint.Y - (int)Math.Round((destinationPoint.Y - startPoint.Y) * speed / distance);
+            }
+
+            return new Point(resultX, resultY);
+            
+        }
+
+
     }
 }

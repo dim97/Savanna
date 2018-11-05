@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Savanna
+namespace Savanna.Services
 {
     public class Menu
     {

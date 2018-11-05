@@ -7,12 +7,12 @@ namespace Savanna.Models
 {
     public class Field
     {
-        public static int DefaultWidth = 40;
-        public static int DefaultHeigth = 40;
+        public static int DefaultWidth { get; set; } = 40;
+        public static int DefaultHeigth { get; set; } = 40;
 
-        public int Width;
-        public int Heigth;
-        public IAnimal[,] Animals;
+        public int Width { get; set; }
+        public int Heigth { get; set; }
+        public IAnimal[,] Animals { get; set; }
        
     }
 }

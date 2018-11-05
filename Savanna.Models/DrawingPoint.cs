@@ -9,8 +9,8 @@ namespace Savanna.Models
 {
     public struct DrawingPoint
     {
-        public Point Position;
-        public char Sign;
+        public Point Position { get; set; }
+        public char Sign { get; set; }
         
     }
 }

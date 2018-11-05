@@ -1,4 +1,5 @@
-﻿using Savanna.Models;
+﻿using Savanna.Enums;
+using Savanna.Models;
 using System.Drawing;
 
 namespace Savanna.Services
@@ -14,6 +15,26 @@ namespace Savanna.Services
             else
             {
                 return true;
+            }
+        }
+
+        public bool CheckSuitability(Field field, Point position, AnimalType animalType)
+        {
+            if (CheckEmpty(field, position))
+            {
+                return true;
+            }
+            else if (field.Animals[position.Y, position.X].Type != AnimalType.Carnivore)
+            {
+                return false;
+            }
+            else if (field.Animals[position.Y, position.X].Type == AnimalType.Herbivore)
+            {
+                return false;
+            }
+            else
+            {
+                return false;
             }
         }
 

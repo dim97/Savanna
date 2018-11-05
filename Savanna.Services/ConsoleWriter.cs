@@ -11,7 +11,7 @@ namespace Savanna.Services
         public static List<DrawingPoint> PointsToDraw = new List<DrawingPoint>();
 
         public bool Frame { get; private set; }
-        public static char EmptySpace = ' ';
+        public static char EmptySpace { get; set; } = ' ';
         public int FrameCorrection
         {
             get

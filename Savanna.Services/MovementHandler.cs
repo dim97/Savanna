@@ -1,6 +1,7 @@
 ﻿using Savanna.Enums;
+using Savanna.Interfaces;
 using Savanna.Models;
-using System;
+
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
@@ -9,116 +10,88 @@ namespace Savanna.Services
 {
     public class MovementHandler
     {
-
-        List<Point> movedAnimals;
-        int fullIterationDuration = 500;
+        List<Point> MovedAnimals { get; set; }
+        public int FullIterationDuration { get; set; } = 500;
 
         public FieldHandler fieldHandler = new FieldHandler();
         PositionHandler positionHandler = new PositionHandler();
         PositionChecker positionChecker = new PositionChecker();
+        AnimalFinder animalFinder = new AnimalFinder();
         public ConsoleWriter consoleWriter = new ConsoleWriter(true);
 
         public void HandleMovement()
         {
             MoveAnimals(fieldHandler.field, AnimalType.Carnivore);
-            Thread.Sleep(fullIterationDuration / 2);
+            Thread.Sleep(FullIterationDuration / 2);
             consoleWriter.DrawPointsFromList(fieldHandler);
             MoveAnimals(fieldHandler.field, AnimalType.Herbivore);
-            Thread.Sleep(fullIterationDuration / 2);
+            Thread.Sleep(FullIterationDuration / 2);
             consoleWriter.DrawPointsFromList(fieldHandler);
         }
 
         private void MoveAnimals(Field field, AnimalType type)
         {
-            movedAnimals = new List<Point>();
+            MovedAnimals = new List<Point>();
 
             for (int i = 0; i < field.Heigth; i++)
             {
                 for (int j = 0; j < field.Width; j++)
                 {
-                    if ((field.Animals[i, j] != null) && (field.Animals[i, j].Type == type))
+                    IAnimal animal = field.Animals[i, j];
+
+                    if ((animal != null) && (animal.Type == type))
                     {
-                        int animalSpeed = field.Animals[i, j].Speed;
+                        int animalSpeed = animal.Speed;
                         Point oldPosition = new Point(j, i);
-                        Point newPosition = positionHandler.GetRandomNewPosition(field, oldPosition, animalSpeed);
-                        Point nearestHerbivore = positionHandler.SelectNearestAnimalByType(field, oldPosition, field.Animals[i, j].VisionRange, AnimalType.Herbivore);
-                        Point nearestCarnivore = positionHandler.SelectNearestAnimalByType(field, oldPosition, field.Animals[i, j].VisionRange, AnimalType.Carnivore); ;
-                        if (field.Animals[i, j].Type == AnimalType.Carnivore)
-                        {
-                            if ((nearestHerbivore.X != -1) && (new DistanceHandler().GetDistance(oldPosition, nearestHerbivore) <= field.Animals[i, j].VisionRange))
-                            {
-                                if (new DistanceHandler().GetDistance(oldPosition, nearestHerbivore) <= field.Animals[i, j].Speed)
-                                {
+                        Point newPosition;
+                        Point nearestHerbivore = animalFinder.SelectNearestAnimalByType(field, oldPosition, animal.VisionRange, AnimalType.Herbivore);
+                        Point nearestCarnivore = animalFinder.SelectNearestAnimalByType(field, oldPosition, animal.VisionRange, AnimalType.Carnivore); ;
 
-                                    MoveToPoint(field, oldPosition, nearestHerbivore);
-                                }
-                                else
-                                {
-                                    newPosition = GetAnimalNextWaypoint(field, oldPosition, nearestHerbivore, field.Animals[i, j].Speed, MovingType.Pursuit);
-                                }
-                            }
-                            else
-                            {
-                                newPosition = positionHandler.GetRandomNewPosition(field, oldPosition, animalSpeed);
-                            }
-                        }
-                        if (field.Animals[i, j].Type == AnimalType.Herbivore)
+                        if (animal.Type == AnimalType.Carnivore)
                         {
-                            if ((nearestCarnivore.X != -1) && (new DistanceHandler().GetDistance(oldPosition, nearestCarnivore) <= field.Animals[i, j].VisionRange))
-                            {
-                                if (new DistanceHandler().GetDistance(oldPosition, nearestCarnivore) <= field.Animals[i, j].Speed)
-                                {
-                                    MoveToPoint(field, oldPosition, nearestHerbivore);
-                                }
-                                else
-                                {
-                                    newPosition = GetAnimalNextWaypoint(field, oldPosition, nearestCarnivore, field.Animals[i, j].Speed, MovingType.Runaway);
-                                }
-                            }
-                            else
-                            {
-                                newPosition = positionHandler.GetRandomNewPosition(field, oldPosition, animalSpeed);
-                            }
+                            newPosition = GetNewPositionByBehavior(field,animal,nearestHerbivore,oldPosition, MovingType.Pursuit);
                         }
-
+                        else
+                        {
+                            newPosition = GetNewPositionByBehavior(field, animal, nearestCarnivore, oldPosition, MovingType.Runaway);
+                        }
 
                         if (MoveToPoint(field, oldPosition, newPosition))
                         {
-                            movedAnimals.Add(newPosition);
+                            MovedAnimals.Add(newPosition);
                         }
                     }
                 }
             }
         }
 
-        private Point GetAnimalNextWaypoint(Field field, Point startPoint, Point destinationPoint, int speed,MovingType movingType)
+        private Point GetNewPositionByBehavior(Field field, IAnimal animal,Point nearestAnimal ,Point oldPosition ,MovingType movingType)
         {
-            Point result;
-            int resultX=0, resultY=0, stepsCount;
-            double distance;
+            Point newPosition = oldPosition;
 
-            distance = new DistanceHandler().GetDistance(startPoint, destinationPoint);
-            stepsCount = (int)Math.Ceiling(distance / speed);
-
-            if (movingType == MovingType.Pursuit)
+            if ((nearestAnimal.X != -1) && (new DistanceHandler().GetDistance(oldPosition, nearestAnimal) <= animal.VisionRange))
             {
-                resultX = startPoint.X + (destinationPoint.X - startPoint.X) * speed / stepsCount;
-                resultY = startPoint.Y + (destinationPoint.Y - startPoint.Y) * speed / stepsCount;
+                if ((new DistanceHandler().GetDistance(oldPosition, nearestAnimal) <= animal.Speed)&&(animal.Type==AnimalType.Carnivore))
+                {
+                    newPosition = nearestAnimal;
+                }
+                else
+                {
+                    Point desiredPosition = positionHandler.GetAnimalNextWaypoint(field, oldPosition, nearestAnimal, animal.Speed, movingType);
+                    newPosition = positionHandler.GetSuitableNewPosition(field, oldPosition, desiredPosition, animal.Speed, animal.Type);
+                }
             }
-            if (movingType == MovingType.Runaway)
+            else
             {
-                resultX = startPoint.X - (destinationPoint.X - startPoint.X) * speed / stepsCount;
-                resultY = startPoint.Y - (destinationPoint.Y - startPoint.Y) * speed / stepsCount;
+                newPosition = positionHandler.GetRandomNewPosition(field, oldPosition, animal.Speed);
             }
 
-            result = new Point(resultX, resultY);
-
-            return result;
+            return newPosition;
         }
 
         private bool MoveToPoint(Field field, Point oldPosition, Point newPosition)
         {
-            if ((field.Animals[oldPosition.Y, oldPosition.X]!=null) && (oldPosition != newPosition) && positionChecker.CheckFieldBorders(field, newPosition) && !movedAnimals.Contains(oldPosition))
+            if ((field.Animals[oldPosition.Y, oldPosition.X] != null) && (oldPosition != newPosition) && positionChecker.CheckFieldBorders(field, newPosition) && !MovedAnimals.Contains(oldPosition))
             {
                 field.Animals[newPosition.Y, newPosition.X] = field.Animals[oldPosition.Y, oldPosition.X];
                 ConsoleWriter.PointsToDraw.Add(new DrawingPoint() { Position = newPosition, Sign = field.Animals[newPosition.Y, newPosition.X].Sign });

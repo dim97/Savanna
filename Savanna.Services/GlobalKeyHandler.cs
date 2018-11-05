@@ -5,7 +5,7 @@ namespace Savanna.Services
 {
     public class GlobalKeyHandler
     {
-        ConsoleKeyInfo keyinfo;
+        ConsoleKeyInfo keyinfo { get; set; }
         AnimalPlacer animalPlacer = new AnimalPlacer();
 
         public void HandleKeys(FieldHandler fieldHandler)
