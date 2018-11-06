@@ -1,4 +1,5 @@
 ﻿using Savanna.Enums;
+using Savanna.Interfaces;
 using Savanna.Models;
 using System;
 using System.Collections.Generic;
@@ -59,6 +60,32 @@ namespace Savanna.Services
             return newPosition;
         }
 
+        public Point GetNewPositionByBehavior(Field field, IAnimal animal, Point nearestAnimal, Point oldPosition, MovingType movingType)
+        {
+            PathHandler pathHandler = new PathHandler();
+            Point newPosition = oldPosition;
+            DistanceHandler distanceHandler = new DistanceHandler();
+
+            if ((nearestAnimal.X != -1) && (distanceHandler.GetDistance(oldPosition, nearestAnimal) <= animal.VisionRange))
+            {
+                if ((distanceHandler.GetDistance(oldPosition, nearestAnimal) <= animal.Speed) && (animal.Type == AnimalType.Carnivore))
+                {
+                    newPosition = nearestAnimal;
+                }
+                else
+                {
+                    Point desiredPosition = pathHandler.GetAnimalNextWaypoint(field, oldPosition, nearestAnimal, animal.Speed, movingType);
+                    newPosition = GetSuitableNewPosition(field, oldPosition, desiredPosition, animal.Speed, animal.Type);
+                }
+            }
+            else
+            {
+                newPosition = GetRandomNewPosition(field, oldPosition, animal.Speed);
+            }
+
+            return newPosition;
+        }
+
         public List<Point> GetAllPositionsToMove(Field field, Point position, int animalSpeed)
         {
             List<Point> PositionsToMove = new List<Point>();
@@ -76,32 +103,6 @@ namespace Savanna.Services
             }
             return PositionsToMove;
         }
-
-        public Point GetAnimalNextWaypoint(Field field, Point startPoint, Point destinationPoint, int speed, MovingType movingType)
-        {
-
-            DistanceHandler distanceHandler = new DistanceHandler();
-
-            int resultX = 0, resultY = 0 ;
-            double distance;
-
-            distance = distanceHandler.GetDistance(startPoint, destinationPoint);
-
-            if (movingType == MovingType.Pursuit)
-            {
-                resultX = startPoint.X + (int)Math.Round((destinationPoint.X - startPoint.X) * speed / distance);
-                resultY = startPoint.Y + (int)Math.Round((destinationPoint.Y - startPoint.Y) * speed / distance);
-            }
-            else if (movingType == MovingType.Runaway)
-            {
-                resultX = startPoint.X - (int)Math.Round((destinationPoint.X - startPoint.X) * speed / distance);
-                resultY = startPoint.Y - (int)Math.Round((destinationPoint.Y - startPoint.Y) * speed / distance);
-            }
-
-            return new Point(resultX, resultY);
-            
-        }
-
 
     }
 }

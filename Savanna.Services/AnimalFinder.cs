@@ -21,7 +21,8 @@ namespace Savanna.Services
             {
                 for (int j = position.X - visionRange; j < position.X + visionRange; j++)
                 {
-                    if (positionChecker.CheckFieldBorders(field, new Point(j, i)) && !positionChecker.CheckEmpty(field, new Point(j, i)))
+                    Point currentPoint = new Point(j, i);
+                    if (positionChecker.CheckFieldBorders(field, currentPoint) && !positionChecker.CheckEmpty(field, currentPoint))
                     {
                         animals.Add(new Point(j, i));
                     }
@@ -36,17 +37,17 @@ namespace Savanna.Services
             Point nearestAnimal = new Point(-1, -1);
             DistanceHandler distanceHandler = new DistanceHandler();
 
-            foreach (Point animalLocation in animals)
+            foreach (Point animal in animals)
             {
-                if (field.Animals[animalLocation.Y, animalLocation.X].Type == searchingAnimalType)
+                if (field.Animals[animal.Y, animal.X].Type == searchingAnimalType)
                 {
                     if (nearestAnimal.X == -1)
                     {
-                        nearestAnimal = animalLocation;
+                        nearestAnimal = animal;
                     }
-                    else if (distanceHandler.GetDistance(position, animalLocation) < distanceHandler.GetDistance(position, nearestAnimal))
+                    else if (distanceHandler.GetDistance(position, animal) < distanceHandler.GetDistance(position, nearestAnimal))
                     {
-                        nearestAnimal = animalLocation;
+                        nearestAnimal = animal;
                     }
                 }
             }

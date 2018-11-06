@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Savanna.Models", "Savanna.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Savanna.Services", "Savanna.Services\Savanna.Services.csproj", "{7466D458-1BAC-49DB-A563-353EFAF68165}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Savanna.Factories", "Savanna.Factories\Savanna.Factories.csproj", "{8A0D6A13-6D47-4D1D-992F-2B1339A222C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{7466D458-1BAC-49DB-A563-353EFAF68165}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7466D458-1BAC-49DB-A563-353EFAF68165}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7466D458-1BAC-49DB-A563-353EFAF68165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A0D6A13-6D47-4D1D-992F-2B1339A222C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A0D6A13-6D47-4D1D-992F-2B1339A222C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A0D6A13-6D47-4D1D-992F-2B1339A222C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A0D6A13-6D47-4D1D-992F-2B1339A222C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

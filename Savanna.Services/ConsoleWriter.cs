@@ -8,10 +8,7 @@ namespace Savanna.Services
 {
     public class ConsoleWriter
     {
-        public static List<DrawingPoint> PointsToDraw = new List<DrawingPoint>();
-
         public bool Frame { get; private set; }
-        public static char EmptySpace { get; set; } = ' ';
         public int FrameCorrection
         {
             get
@@ -53,16 +50,18 @@ namespace Savanna.Services
             }
         }
 
-        public void DrawPointsFromList(FieldHandler fieldHandler)
+        public void DrawPointsFromList(FieldHandler fieldHandler, List<DrawingPoint> listOfPoints)
         {
-            List<DrawingPoint> pointListBuffer = new List<DrawingPoint>(PointsToDraw);
-            PointsToDraw.Clear();
+            List<DrawingPoint> pointListBuffer = new List<DrawingPoint>(listOfPoints);
+            listOfPoints.Clear();
 
             foreach (DrawingPoint point in pointListBuffer)
             {
                 RedrawCell(point.Position,point.Sign);
             }
         }
+
+
 
         private void DrawFrame(Field field)
         {

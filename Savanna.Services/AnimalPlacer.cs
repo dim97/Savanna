@@ -25,15 +25,13 @@ namespace Savanna.Services
 
                 fieldHandler.field.Animals[randomY, randomX] = animalToAdd;
                 NewAnimalPosition = new Point(randomX,randomY);
-                ConsoleWriter.PointsToDraw.Add(new DrawingPoint() { Position = NewAnimalPosition, Sign = animalToAdd.Sign });
-            }
+          }
         }
 
         public void PlaceAnimalInField(IAnimal animalToAdd, FieldHandler fieldHandler, Point position)
         {
             fieldHandler.field.Animals[position.Y, position.X] = animalToAdd;
             NewAnimalPosition = new Point(position.X, position.Y);
-            ConsoleWriter.PointsToDraw.Add(new DrawingPoint() { Position = NewAnimalPosition, Sign = animalToAdd.Sign });
         }
     }
 }

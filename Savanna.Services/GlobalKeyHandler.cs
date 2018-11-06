@@ -1,4 +1,4 @@
-﻿using Savanna.Models.Animals;
+﻿using Savanna.Interfaces;
 using System;
 
 namespace Savanna.Services
@@ -6,7 +6,6 @@ namespace Savanna.Services
     public class GlobalKeyHandler
     {
         ConsoleKeyInfo keyinfo { get; set; }
-        AnimalPlacer animalPlacer = new AnimalPlacer();
 
         public void HandleKeys(FieldHandler fieldHandler)
         {
@@ -29,13 +28,19 @@ namespace Savanna.Services
 
         private void HandleAnimalKeys(ConsoleKeyInfo key, FieldHandler fieldHandler)
         {
-            if (char.ToUpper(keyinfo.KeyChar) == new Antilope().Sign)
+
+            AnimalPlacer animalPlacer = new AnimalPlacer();
+            AnimalCreator animalCreator = new AnimalCreator();
+            IAnimal antilope = animalCreator.CreateAntilope();
+            IAnimal lion = animalCreator.CreateLion();
+
+            if (char.ToUpper(keyinfo.KeyChar) == antilope.Sign)
             {
-                animalPlacer.PlaceAnimalInRandomPlace(new Antilope(), fieldHandler);
+                animalPlacer.PlaceAnimalInRandomPlace(antilope, fieldHandler);
             }
-            if (char.ToUpper(keyinfo.KeyChar) == new Lion().Sign)
+            if (char.ToUpper(keyinfo.KeyChar) == lion.Sign)
             {
-                animalPlacer.PlaceAnimalInRandomPlace(new Lion(), fieldHandler);
+                animalPlacer.PlaceAnimalInRandomPlace(lion, fieldHandler);
             }
         }
     }

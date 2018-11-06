@@ -39,9 +39,9 @@ namespace Savanna.Services
 
         public List<string> GetFieldInStringList()
         {
-
             List<string> lines = new List<string>();
             StringBuilder stringBuilder = new StringBuilder();
+            DrawingSymbols drawingSymbols = new DrawingSymbols();
 
             for (int i = 0; i < field.Heigth; i++)
             {
@@ -53,7 +53,7 @@ namespace Savanna.Services
                     }
                     else
                     {
-                        stringBuilder.Append(ConsoleWriter.EmptySpace);
+                        stringBuilder.Append(drawingSymbols.EmptySpace);
                     }
                     stringBuilder.Append(' ');
                 }

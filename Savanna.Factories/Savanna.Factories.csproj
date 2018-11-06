@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FE9F21C6-9A85-45D0-A47D-FFC0CF6D6A5C}</ProjectGuid>
+    <ProjectGuid>{8A0D6A13-6D47-4D1D-992F-2B1339A222C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Savanna.Models</RootNamespace>
-    <AssemblyName>Savanna.Models</AssemblyName>
+    <RootNamespace>Savanna.Factories</RootNamespace>
+    <AssemblyName>Savanna.Factories</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -33,7 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,21 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animals\Antilope.cs" />
-    <Compile Include="Animals\Lion.cs" />
-    <Compile Include="DrawingPoint.cs" />
-    <Compile Include="DrawingSymbols.cs" />
-    <Compile Include="Field.cs" />
+    <Compile Include="AnimalFactory.cs" />
+    <Compile Include="AntilopeFactory.cs" />
+    <Compile Include="LionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Savanna.Enums\Savanna.Enums.csproj">
-      <Project>{d01ecc6a-65fd-4623-a36a-7fff2090fad6}</Project>
-      <Name>Savanna.Enums</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Savanna.Interfaces\Savanna.Interfaces.csproj">
       <Project>{031acc05-e146-40a1-aa15-0c14818c9762}</Project>
       <Name>Savanna.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Savanna.Models\Savanna.Models.csproj">
+      <Project>{fe9f21c6-9a85-45d0-a47d-ffc0cf6d6a5c}</Project>
+      <Name>Savanna.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
