@@ -1,12 +1,12 @@
 ﻿using Savanna.Interfaces;
-using Savanna.Models;
-using System.Drawing;
+using Savanna.Interfaces.Models;
+using Savanna.Interfaces.Services;
 
 namespace Savanna.Services
 {
-    public class HealthHandler
+    public class HealthHandler : IHealthHandler
     {
-        public void HandleAllAnimalHealthDecrease(Field field)
+        public void HandleAllAnimalHealthDecrease(IField field)
         {
             for (int i = 0; i < field.Heigth; i++)
             {
@@ -17,9 +17,7 @@ namespace Savanna.Services
                     {
                         if (animal.Health <= 0)
                         {
-                            DrawingSymbols symbols = new DrawingSymbols();
                             field.Animals[i, j] = null;
-                            //ConsoleWriter.PointsToDraw.Add(new DrawingPoint {Position = new Point(j,i),Sign = symbols.EmptySpace  });
                         }
                         else
                         {

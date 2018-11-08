@@ -1,4 +1,6 @@
-﻿using Savanna.Models;
+﻿using Savanna.Interfaces.Models;
+using Savanna.Interfaces.Services;
+using Savanna.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,9 +8,12 @@ using System.Threading;
 
 namespace Savanna.Services
 {
-    public class ConsoleWriter
+    public class ConsoleWriter : IConsoleWriter
     {
-        public bool Frame { get; private set; }
+        private IFieldHandler _fieldHandler;
+        private IField _field;
+
+        public bool Frame { get; set; }
         public int FrameCorrection
         {
             get
@@ -22,23 +27,26 @@ namespace Savanna.Services
                     return 0;
                 }
             }
+            set { }
         }
 
-        public ConsoleWriter(bool frame)
+        public ConsoleWriter(IFieldHandler fieldHandler)
         {
-            Frame = frame;
+            Frame = true;
+            _fieldHandler = fieldHandler;
+            _field = fieldHandler.GameField;
         }
 
-        public void DrawFieldToConsole(FieldHandler fieldHandler)
+        public void DrawFieldToConsole()
         {
             Console.CursorVisible = false;
 
             if (Frame)
             {
-                DrawFrame(fieldHandler.field);
+                DrawFrame();
             }
 
-            List<string> lines = fieldHandler.GetFieldInStringList();
+            List<string> lines = _fieldHandler.GetFieldInStringList();
             for (int i = 0; i < lines.Count; i++)
             {
                 string line = lines[i];
@@ -50,46 +58,44 @@ namespace Savanna.Services
             }
         }
 
-        public void DrawPointsFromList(FieldHandler fieldHandler, List<DrawingPoint> listOfPoints)
+        public void DrawPointsFromList(List<IDrawingPoint> listOfPoints)
         {
-            List<DrawingPoint> pointListBuffer = new List<DrawingPoint>(listOfPoints);
+            List<IDrawingPoint> pointListBuffer = new List<IDrawingPoint>(listOfPoints);
             listOfPoints.Clear();
 
             foreach (DrawingPoint point in pointListBuffer)
             {
-                RedrawCell(point.Position,point.Sign);
+                RedrawCell(point.Position, point.Sign);
             }
         }
 
-
-
-        private void DrawFrame(Field field)
+        public void DrawFrame()
         {
             Console.SetCursorPosition(0, 0);
             Console.Write('╔');
-            for (int i = 1; i < field.Width * 2+ FrameCorrection; i++)
+            for (int i = 1; i < _field.Width * 2 + FrameCorrection; i++)
             {
                 Console.SetCursorPosition(i, 0);
                 Console.Write('═');
             }
-            Console.SetCursorPosition(field.Width*2+ FrameCorrection, 0);
+            Console.SetCursorPosition(_field.Width * 2 + FrameCorrection, 0);
             Console.Write('╗');
-            for (int i = 1; i < field.Heigth+ FrameCorrection; i++)
+            for (int i = 1; i < _field.Heigth + FrameCorrection; i++)
             {
                 Console.SetCursorPosition(0, i);
                 Console.Write('║');
                 Thread.Sleep(10);
-                Console.SetCursorPosition(field.Width * 2+ FrameCorrection, i);
+                Console.SetCursorPosition(_field.Width * 2 + FrameCorrection, i);
                 Console.Write('║');
             }
-            Console.SetCursorPosition(0, field.Heigth+ FrameCorrection);
+            Console.SetCursorPosition(0, _field.Heigth + FrameCorrection);
             Console.Write('╚');
-            for (int i = 1; i < field.Width * 2+ FrameCorrection; i++)
+            for (int i = 1; i < _field.Width * 2 + FrameCorrection; i++)
             {
-                Console.SetCursorPosition(i, field.Heigth+ FrameCorrection);
+                Console.SetCursorPosition(i, _field.Heigth + FrameCorrection);
                 Console.Write('═');
             }
-            Console.SetCursorPosition(field.Width * 2+ FrameCorrection, field.Heigth+FrameCorrection);
+            Console.SetCursorPosition(_field.Width * 2 + FrameCorrection, _field.Heigth + FrameCorrection);
             Console.Write('╝');
         }
 

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Savanna.Interfaces.Models;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Savanna.Models
 {
-    public struct DrawingPoint
+    public struct DrawingPoint : IDrawingPoint
     {
         public Point Position { get; set; }
         public char Sign { get; set; }

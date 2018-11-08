@@ -1,24 +1,30 @@
 ﻿using Savanna.Enums;
-using Savanna.Models;
+using Savanna.Interfaces.Models;
+using Savanna.Interfaces.Services;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Savanna.Services
 {
-   public class PathHandler
+    public class PathHandler : IPathHandler
     {
-        public Point GetAnimalNextWaypoint(Field field, Point startPoint, Point destinationPoint, int speed, MovingType movingType)
-        {
-            DistanceHandler distanceHandler = new DistanceHandler();
+        IDistanceHandler _distanceHandler;
+        IField _field;
 
-            int resultX = 0, resultY = 0;
+        public PathHandler(IDistanceHandler distanceHandler, IField field)
+        {
+            _distanceHandler = distanceHandler;
+            _field = field;
+        }
+
+        public Point GetAnimalNextWaypoint(Point startPoint, Point destinationPoint, MovingType movingType)
+        {
+            int resultX = 0, resultY = 0, speed;
             double distance;
 
-            distance = distanceHandler.GetDistance(startPoint, destinationPoint);
+            speed = _field.Animals[startPoint.Y, startPoint.X].Speed;
+
+            distance = _distanceHandler.GetDistance(startPoint, destinationPoint);
 
             if (movingType == MovingType.Pursuit)
             {

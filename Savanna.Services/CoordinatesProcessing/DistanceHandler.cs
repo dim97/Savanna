@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using Savanna.Interfaces.Services;
 
 namespace Savanna.Services
 {
-    public class DistanceHandler
+    public class DistanceHandler : IDistanceHandler
     {
         public double GetDistance(Point A, Point B)
         {

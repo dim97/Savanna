@@ -1,18 +1,22 @@
 ﻿using Savanna.Interfaces;
-using Savanna.Models.Animals;
+using Savanna.Interfaces.Models;
 using System;
-using System.Text;
 
 namespace Savanna.Models
 {
-    public class Field
+    public class Field : IField
     {
-        public static int DefaultWidth { get; set; } = 40;
-        public static int DefaultHeigth { get; set; } = 40;
-
         public int Width { get; set; }
         public int Heigth { get; set; }
         public IAnimal[,] Animals { get; set; }
-       
+        Guid id;
+
+        public Field()
+        {
+            Width = 40;
+            Heigth = 40;
+            Animals = new IAnimal[40, 40];
+            id = Guid.NewGuid();
+        }
     }
 }

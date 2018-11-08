@@ -1,9 +1,10 @@
 ﻿using Savanna.Factories;
 using Savanna.Interfaces;
+using Savanna.Interfaces.Services;
 
 namespace Savanna.Services
 {
-    public class AnimalCreator
+    public class AnimalCreator : IAnimalCreator
     {
         AnimalFactory animalFactory;
 

@@ -1,28 +1,25 @@
-﻿using Savanna.Interfaces;
+﻿using Savanna.Interfaces.Models;
+using Savanna.Interfaces.Services;
 using Savanna.Models;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Savanna.Services
 {
-    public class FieldHandler
+    public class FieldHandler : IFieldHandler
     {
-        public Field field = new Field()
-        {
-            Heigth = Field.DefaultHeigth,
-            Width = Field.DefaultWidth,
-            Animals = new IAnimal[Field.DefaultHeigth, Field.DefaultWidth]
-        };
+        public IField GameField { get; set; }
+
         public bool IsFull
         {
             get
             {
                 bool flag = true;
-                for (int i = 0; i < field.Heigth; i++)
+                for (int i = 0; i < GameField.Heigth; i++)
                 {
-                    for (int j = 0; j < field.Width; j++)
+                    for (int j = 0; j < GameField.Width; j++)
                     {
-                        if (field.Animals[i, j] == null)
+                        if (GameField.Animals[i, j] == null)
                         {
                             flag = false;
                         }
@@ -37,19 +34,24 @@ namespace Savanna.Services
             set { }
         }
 
+        public FieldHandler(IField field)
+        {
+            GameField = field;
+        }
+
         public List<string> GetFieldInStringList()
         {
             List<string> lines = new List<string>();
             StringBuilder stringBuilder = new StringBuilder();
             DrawingSymbols drawingSymbols = new DrawingSymbols();
 
-            for (int i = 0; i < field.Heigth; i++)
+            for (int i = 0; i < GameField.Heigth; i++)
             {
-                for (int j = 0; j < field.Width; j++)
+                for (int j = 0; j < GameField.Width; j++)
                 {
-                    if (field.Animals[i, j] != null)
+                    if (GameField.Animals[i, j] != null)
                     {
-                        stringBuilder.Append(field.Animals[i, j].Sign);
+                        stringBuilder.Append(GameField.Animals[i, j].Sign);
                     }
                     else
                     {

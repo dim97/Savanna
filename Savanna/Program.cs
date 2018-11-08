@@ -1,4 +1,5 @@
-﻿using Savanna.Services;
+﻿using Savanna.Interfaces.Services;
+using Unity;
 
 namespace Savanna
 {
@@ -6,7 +7,9 @@ namespace Savanna
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
+            Dependencies dependencies = new Dependencies();
+            UnityContainer unityContainer = dependencies.GetDependencyContainer();
+            IGame game = unityContainer.Resolve<IGame>();
             game.Play();
         }
     }
