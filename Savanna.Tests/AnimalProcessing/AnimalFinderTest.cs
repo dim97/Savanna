@@ -102,6 +102,7 @@ namespace Savanna.Tests
         {
             //Arrange 
             Point expectedResult = new Point(2, 0);
+            _field.Object.Animals[0, 0].VisionRange = 5;
 
             //Act
             _result = _systemUnderTest.SelectNearestAnimalByType(_position, AnimalType.Carnivore);

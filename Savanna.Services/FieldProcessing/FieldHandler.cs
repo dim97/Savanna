@@ -31,7 +31,6 @@ namespace Savanna.Services
                 }
                 return flag;
             }
-            set { }
         }
 
         public FieldHandler(IField field)

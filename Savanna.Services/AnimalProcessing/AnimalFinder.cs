@@ -49,6 +49,7 @@ namespace Savanna.Services
             {
                 if (_field.Animals[animal.Y, animal.X].Type == searchingAnimalType)
                 {
+
                     if (nearestAnimal.X == -1)
                     {
                         nearestAnimal = animal;

@@ -11,16 +11,18 @@ namespace Savanna.Services
     {
         public List<Point> MovedAnimals { get; set; }
 
-        private IField _field;
-        private IPositionHandler _positionHandler;
-        private IPointReplacer _pointReplacer;
-        private IAnimalFinder _animalFinder;
+        private readonly IField _field;
+        private readonly IPositionHandler _positionHandler;
+        private readonly IPointReplacer _pointReplacer;
+        private readonly IAnimalFinder _animalFinder;
+        private readonly IHealthHandler _healthHandler;
 
         public MovementHandler
             (
          IPositionHandler positionHandler,
          IPointReplacer pointReplacer,
          IAnimalFinder animalFinder,
+         IHealthHandler healthHandler,
          IField field
             )
         {
@@ -28,6 +30,7 @@ namespace Savanna.Services
             _positionHandler = positionHandler;
             _pointReplacer = pointReplacer;
             _animalFinder = animalFinder;
+            _healthHandler = healthHandler;
         }
 
         public void MoveAnimals(AnimalType type)
@@ -50,6 +53,10 @@ namespace Savanna.Services
                         if (animal.Type == AnimalType.Carnivore)
                         {
                             newPosition = _positionHandler.GetNewPositionByBehavior(animal, nearestHerbivore, oldPosition, MovingType.Pursuit);
+                            if (((_field.Animals[newPosition.Y, newPosition.X]!=null)&&(_field.Animals[newPosition.Y, newPosition.X].Type == AnimalType.Herbivore)))
+                            {
+                                _healthHandler.IncreaseHealth(animal,10);
+                            }
                         }
                         else
                         {

@@ -1,15 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Savanna.Interfaces.Models;
 using Moq;
-using Savanna.Interfaces.Services;
-using Savanna.Services;
-using Savanna.Models.Animals;
-using System.Drawing;
-using System.Collections.Generic;
 using Savanna.Interfaces;
-using Savanna.Models;
-using System.Text;
-using Savanna.Factories;
+using Savanna.Interfaces.Models;
+using Savanna.Interfaces.Services;
+using Savanna.Models.Animals;
+using Savanna.Services;
+using System.Collections.Generic;
 
 namespace Savanna.Tests
 {
@@ -50,32 +46,37 @@ namespace Savanna.Tests
         [TestMethod]
         public void GetFieldInStringList_should_return_list_of_strings_that_represents_animal_positions_in_field()
         {
-            //Arrang
-            DrawingSymbols drawingSymbols = new DrawingSymbols();
-            List<string> expectedRerult = new List<string>();
-
             //Act
             List<string> result = _systemUnderTest.GetFieldInStringList();
 
             //Assert
-            Assert.AreEqual("A A L ",result[0]);
+            Assert.AreEqual("A A L ", result[0]);
             Assert.AreEqual("    L ", result[1]);
         }
 
-        //[TestMethod]
-        //public void GetFieldInStringList_should_return_empty__list_of_strings_when_field_is_null()
-        //{
-        //    //Arrang
-        //    DrawingSymbols drawingSymbols = new DrawingSymbols();
-        //    List<string> expectedRerult = new List<string>();
-        //    _sut.GameField = null;
+        [TestMethod]
+        public void IsFull_should_return_true_when_field_is_full()
+        {
+            //Arrange
+            GameField.Object.Animals[1, 0] = new Antilope();
+            GameField.Object.Animals[1, 1] = new Antilope();
 
-        //    //Act
-        //    List<string> result = _sut.GetFieldInStringList();
+            //Act
+            bool result = _systemUnderTest.IsFull;
 
-        //    //Assert
-            
-        //}
+            //Assert
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public void IsFull_should_return_false_when_field_is_not_full()
+        {
+            //Act
+            bool result = _systemUnderTest.IsFull;
+
+            //Assert
+            Assert.AreEqual(false, result);
+        }
     }
 }
 
