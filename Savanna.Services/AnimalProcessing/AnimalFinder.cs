@@ -9,14 +9,19 @@ namespace Savanna.Services
     public class AnimalFinder : IAnimalFinder
     {
         private IPositionChecker _positionChecker;
-        public AnimalFinder(IPositionChecker positionChecker)
+        private IField _field;
+        private IDistanceHandler _distanceHandler;
+
+        public AnimalFinder(IField field, IPositionChecker positionChecker,IDistanceHandler distanceHandler)
         {
             _positionChecker = positionChecker;
+            _field = field;
+            _distanceHandler = distanceHandler;
         }
 
-        public List<Point> FindNearestAnimals(IField field, Point position)
+        public List<Point> FindNearestAnimals(Point position)
         {
-            int visionRange = field.Animals[position.Y, position.X].VisionRange;
+            int visionRange = _field.Animals[position.Y, position.X].VisionRange;
             List<Point> animals = new List<Point>();
 
             for (int i = position.Y - visionRange; i < position.Y + visionRange; i++)
@@ -24,7 +29,9 @@ namespace Savanna.Services
                 for (int j = position.X - visionRange; j < position.X + visionRange; j++)
                 {
                     Point currentPoint = new Point(j, i);
-                    if (_positionChecker.CheckFieldBorders(currentPoint) && !_positionChecker.CheckEmpty(currentPoint))
+                    if ((position!=currentPoint)&&
+                        (currentPoint.X >= 0) && (currentPoint.Y >= 0) && (currentPoint.X < _field.Width) && (currentPoint.Y < _field.Heigth) && 
+                        !_positionChecker.CheckEmpty(currentPoint))
                     {
                         animals.Add(new Point(j, i));
                     }
@@ -33,21 +40,20 @@ namespace Savanna.Services
 
             return animals;
         }
-        public Point SelectNearestAnimalByType(IField field, Point position, AnimalType searchingAnimalType)
+        public Point SelectNearestAnimalByType(Point position, AnimalType searchingAnimalType)
         {
-            List<Point> animals = FindNearestAnimals(field, position);
+            List<Point> animals = FindNearestAnimals(position);
             Point nearestAnimal = new Point(-1, -1);
-            DistanceHandler distanceHandler = new DistanceHandler();
 
             foreach (Point animal in animals)
             {
-                if (field.Animals[animal.Y, animal.X].Type == searchingAnimalType)
+                if (_field.Animals[animal.Y, animal.X].Type == searchingAnimalType)
                 {
                     if (nearestAnimal.X == -1)
                     {
                         nearestAnimal = animal;
                     }
-                    else if (distanceHandler.GetDistance(position, animal) < distanceHandler.GetDistance(position, nearestAnimal))
+                    else if (_distanceHandler.GetDistance(position, animal) < _distanceHandler.GetDistance(position, nearestAnimal))
                     {
                         nearestAnimal = animal;
                     }

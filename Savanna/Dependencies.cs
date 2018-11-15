@@ -2,6 +2,7 @@
 using Savanna.Interfaces.Services;
 using Savanna.Models;
 using Savanna.Services;
+using Savanna.Services.CoordinatesProcessing;
 using Unity;
 
 namespace Savanna
@@ -10,27 +11,28 @@ namespace Savanna
     {
         public UnityContainer GetDependencyContainer()
         {
-            UnityContainer Container = new UnityContainer();
+            UnityContainer container = new UnityContainer();
 
-            Container.RegisterSingleton<IGame, Game>();
-            Container.RegisterSingleton<IField, Field>();
-            Container.RegisterSingleton<IFieldHandler, FieldHandler>();
-            Container.RegisterSingleton<IConsoleWriter, ConsoleWriter>();
-            Container.RegisterSingleton<IHealthHandler, HealthHandler>();
-            Container.RegisterSingleton<IGlobalKeyHandler, GlobalKeyHandler>();
+            container.RegisterSingleton<IField, Field>();
 
-            Container.RegisterType<IAnimalCreator, AnimalCreator>();
-            Container.RegisterType<IAnimalPlacer, AnimalPlacer>();
-            Container.RegisterType<IMovementHandler, MovementHandler>();
-            Container.RegisterType<IDistanceHandler, DistanceHandler>();
-            Container.RegisterType<IAnimalFinder, AnimalFinder>();
-            Container.RegisterType<IPositionChecker, PositionChecker>();
-            Container.RegisterType<IPositionHandler, PositionHandler>();
-            Container.RegisterType<IPointReplacer, PointReplacer>();
-            Container.RegisterType<IPointsMonitor, PointsMonitor>();
-            Container.RegisterType<IPathHandler, PathHandler>();
+            container.RegisterType<IGame, Game>();
+            container.RegisterType<IFieldHandler, FieldHandler>();
+            container.RegisterType<IConsoleWriter, ConsoleWriter>();
+            container.RegisterType<IHealthHandler, HealthHandler>();
+            container.RegisterType<IGlobalKeyHandler, GlobalKeyHandler>();
+            container.RegisterType<IAnimalCreator, AnimalCreator>();
+            container.RegisterType<IAnimalPlacer, AnimalPlacer>();
+            container.RegisterType<IMovementHandler, MovementHandler>();
+            container.RegisterType<IDistanceHandler, DistanceHandler>();
+            container.RegisterType<IAnimalFinder, AnimalFinder>();
+            container.RegisterType<IPositionChecker, PositionChecker>();
+            container.RegisterType<IPositionHandler, PositionHandler>();
+            container.RegisterType<IPointReplacer, PointReplacer>();
+            container.RegisterType<IPointsMonitor, PointsMonitor>();
+            container.RegisterType<IPathHandler, PathHandler>();
+            container.RegisterType<IIterationHandler, IterationHandler>();
 
-            return Container;
+            return container;
         }
     }
 }

@@ -48,7 +48,8 @@ namespace Savanna.Services
         {
             Point newPosition = new Point(currentPosition.X, currentPosition.Y);
 
-            if (_positionChecker.CheckFieldBorders(desiredPosition) && _positionChecker.CheckSuitability(desiredPosition, animalType))
+            if ((desiredPosition.X >= 0) && (desiredPosition.Y >= 0) && (desiredPosition.X < _field.Width) && (desiredPosition.Y < _field.Heigth) && 
+                _positionChecker.CheckSuitability(desiredPosition, animalType))
             {
                 newPosition = desiredPosition;
             }
@@ -109,7 +110,8 @@ namespace Savanna.Services
                 for (int j = position.X - _animalSpeed; j < position.X + _animalSpeed + 1; j++)
                 {
                     Point pointToAdd = new Point(j, i);
-                    if (_positionChecker.CheckFieldBorders(pointToAdd) && _positionChecker.CheckEmpty(pointToAdd) && (pointToAdd != new Point(position.X, position.Y)))
+                    if (((pointToAdd.X >= 0) && (pointToAdd.Y >= 0) && (pointToAdd.X < _field.Width) && (pointToAdd.Y < _field.Heigth))&& 
+                        _positionChecker.CheckEmpty(pointToAdd) && (pointToAdd != new Point(position.X, position.Y)))
                     {
                         PositionsToMove.Add(pointToAdd);
                     }

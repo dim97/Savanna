@@ -8,7 +8,6 @@ namespace Savanna.Interfaces.Services
         bool CheckEmpty(Point position);
 
         bool CheckSuitability(Point position, AnimalType animalType);
-
-        bool CheckFieldBorders(Point position);
+       
     }
 }

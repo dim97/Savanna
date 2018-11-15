@@ -1,7 +1,7 @@
 ﻿namespace Savanna.Models
 {
-    public struct DrawingSymbols
+    public class DrawingSymbols
     {
-        public char EmptySpace { get; set; }
+        public char EmptySpace { get; set; } = ' ';
     }
 }

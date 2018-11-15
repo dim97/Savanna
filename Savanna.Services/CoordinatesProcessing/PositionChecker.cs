@@ -1,9 +1,9 @@
-﻿using Savanna.Enums;
+﻿using System.Drawing;
+using Savanna.Enums;
 using Savanna.Interfaces.Models;
 using Savanna.Interfaces.Services;
-using System.Drawing;
 
-namespace Savanna.Services
+namespace Savanna.Services.CoordinatesProcessing
 {
     public class PositionChecker : IPositionChecker
     {
@@ -43,18 +43,6 @@ namespace Savanna.Services
             else
             {
                 return false;
-            }
-        }
-
-        public bool CheckFieldBorders(Point position)
-        {
-            if ((position.X < 0) || (position.Y < 0) || (position.X >= _field.Width) || (position.Y >= _field.Heigth))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
             }
         }
     }

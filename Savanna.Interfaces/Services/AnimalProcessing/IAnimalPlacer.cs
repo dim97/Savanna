@@ -4,7 +4,7 @@ namespace Savanna.Interfaces.Services
 {
     public interface IAnimalPlacer
     {
-        void PlaceAnimalInRandomPlace(IAnimal animalToAdd, IFieldHandler fieldHandler);
-        void PlaceAnimalInField(IAnimal animalToAdd, IFieldHandler fieldHandler, Point position);
+        void PlaceAnimalInRandomPlace(IAnimal animalToAdd);
+        void PlaceAnimalInField(IAnimal animalToAdd, Point position);
     }
 }

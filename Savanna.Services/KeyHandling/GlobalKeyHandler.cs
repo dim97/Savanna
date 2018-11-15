@@ -45,11 +45,11 @@ namespace Savanna.Services
 
             if (char.ToUpper(keyinfo.KeyChar) == antilope.Sign)
             {
-                _animalPlacer.PlaceAnimalInRandomPlace(antilope, _fieldHandler);
+                _animalPlacer.PlaceAnimalInRandomPlace(antilope );
             }
             if (char.ToUpper(keyinfo.KeyChar) == lion.Sign)
             {
-                _animalPlacer.PlaceAnimalInRandomPlace(lion, _fieldHandler);
+                _animalPlacer.PlaceAnimalInRandomPlace(lion);
             }
         }
     }

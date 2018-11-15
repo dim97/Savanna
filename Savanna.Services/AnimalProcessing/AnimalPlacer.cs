@@ -7,27 +7,34 @@ namespace Savanna.Services
 {
     public class AnimalPlacer : IAnimalPlacer
     {
-        public void PlaceAnimalInRandomPlace(IAnimal animalToAdd, IFieldHandler fieldHandler)
+        private IFieldHandler _fieldHandler;
+
+        public AnimalPlacer(IFieldHandler fieldHandler)
+        {
+            _fieldHandler = fieldHandler;
+        }
+
+        public void PlaceAnimalInRandomPlace(IAnimal animalToAdd)
         {
             Random random = new Random();
 
-            int randomX = random.Next(fieldHandler.GameField.Width);
-            int randomY = random.Next(fieldHandler.GameField.Heigth);
-            if (!fieldHandler.IsFull)
+            int randomX = random.Next(_fieldHandler.GameField.Width);
+            int randomY = random.Next(_fieldHandler.GameField.Heigth);
+            if (!_fieldHandler.IsFull)
             {
-                while ((fieldHandler.GameField.Animals[randomY, randomX] != null))
+                while ((_fieldHandler.GameField.Animals[randomY, randomX] != null))
                 {
-                    randomX = random.Next(fieldHandler.GameField.Width);
-                    randomY = random.Next(fieldHandler.GameField.Heigth);
+                    randomX = random.Next(_fieldHandler.GameField.Width);
+                    randomY = random.Next(_fieldHandler.GameField.Heigth);
                 }
 
-                fieldHandler.GameField.Animals[randomY, randomX] = animalToAdd;
+                _fieldHandler.GameField.Animals[randomY, randomX] = animalToAdd;
             }
         }
 
-        public void PlaceAnimalInField(IAnimal animalToAdd, IFieldHandler fieldHandler, Point position)
+        public void PlaceAnimalInField(IAnimal animalToAdd, Point position)
         {
-            fieldHandler.GameField.Animals[position.Y, position.X] = animalToAdd;
+            _fieldHandler.GameField.Animals[position.Y, position.X] = animalToAdd;
         }
     }
 }

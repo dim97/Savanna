@@ -1,20 +1,17 @@
 ﻿using Savanna.Interfaces.Services;
 using System.Threading;
-using Unity;
 
 namespace Savanna.Services
 {
     public class Game : IGame
     {
-        IUnityContainer _container { get; set; }
-
-        private IMovementHandler _movementHandler;
+        private IIterationHandler _iterationHandler;
         private IGlobalKeyHandler _globalKeyHandler;
         private IConsoleWriter _consoleWriter;
 
-        public Game(IMovementHandler movementHandler, IGlobalKeyHandler globalKeyHandler, IConsoleWriter consoleWriter)
+        public Game(IIterationHandler iterationHandler, IGlobalKeyHandler globalKeyHandler, IConsoleWriter consoleWriter)
         {
-            _movementHandler = movementHandler;
+            _iterationHandler = iterationHandler;
             _globalKeyHandler = globalKeyHandler;
             _consoleWriter = consoleWriter;
         }
@@ -27,7 +24,7 @@ namespace Savanna.Services
 
             while (true)
             {
-                _movementHandler.HandleMovement();
+                _iterationHandler.HandleIteration();
             }
         }
 

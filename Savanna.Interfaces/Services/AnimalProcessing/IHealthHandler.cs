@@ -4,7 +4,7 @@ namespace Savanna.Interfaces.Services
 {
     public interface IHealthHandler
     {
-        void HandleAllAnimalHealthDecrease(IField field);
+        void HandleAllAnimalHealthDecrease();
         void DecreaseHealth(IAnimal animal, double value);
         void IncreaseHealth(IAnimal animal, double value);
     }

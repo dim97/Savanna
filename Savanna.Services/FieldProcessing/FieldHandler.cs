@@ -57,7 +57,7 @@ namespace Savanna.Services
                     {
                         stringBuilder.Append(drawingSymbols.EmptySpace);
                     }
-                    stringBuilder.Append(' ');
+                    stringBuilder.Append(drawingSymbols.EmptySpace);
                 }
 
                 lines.Add(stringBuilder.ToString());

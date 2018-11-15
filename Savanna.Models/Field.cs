@@ -9,14 +9,12 @@ namespace Savanna.Models
         public int Width { get; set; }
         public int Heigth { get; set; }
         public IAnimal[,] Animals { get; set; }
-        Guid id;
 
         public Field()
         {
             Width = 40;
             Heigth = 40;
             Animals = new IAnimal[40, 40];
-            id = Guid.NewGuid();
         }
     }
 }

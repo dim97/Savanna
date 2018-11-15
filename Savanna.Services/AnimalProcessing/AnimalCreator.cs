@@ -1,6 +1,7 @@
 ﻿using Savanna.Factories;
 using Savanna.Interfaces;
 using Savanna.Interfaces.Services;
+using Savanna.Models.Animals;
 
 namespace Savanna.Services
 {
@@ -10,13 +11,13 @@ namespace Savanna.Services
 
         public IAnimal CreateAntilope()
         {
-            animalFactory = new AntilopeFactory();
-            return animalFactory.CreateAnimal();
+            animalFactory = new AnimalFactory();
+            return animalFactory.CreateAnimal<Antilope>();
         }
         public IAnimal CreateLion()
         {
-            animalFactory = new LionFactory();
-            return animalFactory.CreateAnimal();
+            animalFactory = new AnimalFactory();
+            return animalFactory.CreateAnimal<Lion>();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Savanna.Services
         {
             if ((_field.Animals[oldPosition.Y, oldPosition.X] != null) && (oldPosition != newPosition))
             {
-                if (_positionChecker.CheckFieldBorders(newPosition))
+                if ((newPosition.X >= 0) && (newPosition.Y >= 0) && (newPosition.X < _field.Width) && (newPosition.Y < _field.Heigth))
                 {
                     _field.Animals[newPosition.Y, newPosition.X] = _field.Animals[oldPosition.Y, oldPosition.X];
                     _field.Animals[oldPosition.Y, oldPosition.X] = null;

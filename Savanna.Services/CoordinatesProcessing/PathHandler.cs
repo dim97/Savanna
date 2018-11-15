@@ -28,13 +28,18 @@ namespace Savanna.Services
 
             if (movingType == MovingType.Pursuit)
             {
-                resultX = startPoint.X + (int)Math.Round((destinationPoint.X - startPoint.X) * speed / distance);
-                resultY = startPoint.Y + (int)Math.Round((destinationPoint.Y - startPoint.Y) * speed / distance);
+                resultX = startPoint.X + CountPositionDelta(startPoint.X, destinationPoint.X, speed, distance);
+                resultY = startPoint.Y + CountPositionDelta(startPoint.Y, destinationPoint.Y, speed, distance);
             }
             else if (movingType == MovingType.Runaway)
             {
-                resultX = startPoint.X - (int)Math.Round((destinationPoint.X - startPoint.X) * speed / distance);
-                resultY = startPoint.Y - (int)Math.Round((destinationPoint.Y - startPoint.Y) * speed / distance);
+                resultX = startPoint.X - CountPositionDelta(startPoint.X,destinationPoint.X,speed,distance);
+                resultY = startPoint.Y - CountPositionDelta(startPoint.Y, destinationPoint.Y, speed, distance);
+            }
+
+            int CountPositionDelta(int from, int to,int animalSpeed, double distanceToPoint)
+            {
+                return (int)Math.Round((to - from) * animalSpeed / distanceToPoint);
             }
 
             return new Point(resultX, resultY);

@@ -6,18 +6,25 @@ namespace Savanna.Services
 {
     public class HealthHandler : IHealthHandler
     {
-        public void HandleAllAnimalHealthDecrease(IField field)
+        private IField _field;
+
+        public HealthHandler(IField field)
         {
-            for (int i = 0; i < field.Heigth; i++)
+            _field = field;
+        }
+
+        public void HandleAllAnimalHealthDecrease()
+        {
+            for (int i = 0; i < _field.Heigth; i++)
             {
-                for (int j = 0; j < field.Width; j++)
+                for (int j = 0; j < _field.Width; j++)
                 {
-                    IAnimal animal = field.Animals[i, j];
+                    IAnimal animal = _field.Animals[i, j];
                     if (animal != null)
                     {
                         if (animal.Health <= 0)
                         {
-                            field.Animals[i, j] = null;
+                            _field.Animals[i, j] = null;
                         }
                         else
                         {
